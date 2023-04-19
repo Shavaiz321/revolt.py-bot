@@ -1,38 +1,28 @@
-import revolt
-import asyncio
 import os
+import asyncio
+import aiohttp
+import revolt
 from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
-CHANNEL_ID = os.getenv("CHANNEL_ID")
-
 class Client(revolt.Client):
     async def on_message(self, message: revolt.Message):
-       try:
-            message.content= message.content.lower()
+            message.content= message.content.lower() #? So every message is lower case
             if message.content == "hello":
-                await message.channel.send("hi how are you")
+                await message.channel.send("What do you want?")
             elif message.content == "hi":
                 await message.channel.send("Hey there")
             elif message.content == "oye":
                 await message.channel.send("Han Oye?")
-       except Exception as e:
-           print(e)
-    async def on_member_join(self, member: revolt.Member):
-        try:
-            embed = revolt.Embed(
-            title="Title of the embedded message",
-            description="Description of the embedded message",
-            color=0xff0000  # Color of the left vertical stripe, in hex
-            )
-            message.channel.send(embed=embed)
-        except Exception as e:
-            print(e)
-async def main():
-    async with revolt.utils.client_session() as session:
-        client = Client(session, f"{TOKEN}")#? Your token goes here
-        await client.start()
-        print("The bot is ready")
+            else:
+                return
+            
+#?This is a simple chat bot, to add more responses you can add on to the existing code
 
+async def main():
+    async with aiohttp.ClientSession() as session:
+        client = Client(session, f"{TOKEN}") #! Input your own token here, I just did this to hide my own token.
+        print("The bot has started")
+        await client.start()
 asyncio.run(main())
